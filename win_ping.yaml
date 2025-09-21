@@ -1,0 +1,7 @@
+- hosts: all
+  gather_facts: no
+
+  tasks:
+  - name: confirmation of connection with hosts
+    win_ping:
+
