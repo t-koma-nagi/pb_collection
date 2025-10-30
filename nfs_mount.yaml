@@ -1,0 +1,31 @@
+- hosts: all
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: check vars
+      ansible.builtin.assert:
+        that:
+          - nfs_server_ip is defined 
+          - nfs_server_path is defined 
+        fail_msg: "Error: VARS 'nfs_server_ip' or 'nfs_server_path' are not defined."
+      run_once: true
+    - name: install nfs-utils
+      ansible.builtin.dnf:
+        name: nfs-utils
+        state: present
+    - name: mount nfs
+      ansible.posix.mount:
+        src: "{{ nfs_server_ip }}:{{ nfs_server_path }}"
+        path: /mnt/nfs_share
+        opts: ro,sync,hard,intr
+        fstype: nfs
+        state: mounted
+    - name: ls nfs_share
+      ansible.builtin.command:
+        cmd: "ls -al /mnt/nfs_share/work_dir"
+    - name: unmount nfs
+      ansible.posix.mount:
+        src: "{{ nfs_server_ip }}:{{ nfs_server_path }}"
+        fstype: nfs
+        state: absent
