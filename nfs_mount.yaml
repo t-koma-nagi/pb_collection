@@ -24,7 +24,7 @@
     - name: ls nfs_share
       ansible.builtin.command:
         cmd: "ls -al /mnt/nfs_share/work_dir"
-        register: mount_ls
+      register: mount_ls
     - name: output ls
       ansible.builtin.debug:
         msg: "{{ mount_ls.stdout_lines }}"
