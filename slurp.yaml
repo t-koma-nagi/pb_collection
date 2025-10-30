@@ -8,5 +8,5 @@
       register: hosts
   
     - name: show hosts
-      debugt:
+      debug:
         msg: "{{ hosts.content | b64decode }}"
