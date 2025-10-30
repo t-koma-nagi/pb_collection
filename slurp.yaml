@@ -1,0 +1,12 @@
+- hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: slurp hosts
+      slurp:
+        src: /etc/hosts
+      register: hosts
+  
+    - name: show hosts
+      debugt:
+        msg: "{{ hosts.content | b64decode }}"
